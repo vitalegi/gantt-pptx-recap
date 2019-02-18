@@ -6,7 +6,7 @@ Idealmente, il progetto riceve in input un json/md, quindi genera un powerpoint 
 
 ## Compilazione ed esecuzione
 
-Il progetto è sviluppato con Java8 + maven.
+Il progetto è sviluppato con Java8 + maven + Lombok (1.18.6).
 
 Posizionarsi nella root, quindi eseguire:
 
