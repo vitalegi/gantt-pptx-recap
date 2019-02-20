@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.apache.poi.sl.usermodel.ShapeType;
+import org.apache.poi.sl.usermodel.TextParagraph.TextAlign;
 import org.apache.poi.sl.usermodel.TextShape.TextAutofit;
 import org.apache.poi.sl.usermodel.VerticalAlignment;
 import org.apache.poi.xslf.usermodel.SlideLayout;
@@ -71,7 +72,7 @@ public class CreateGanttPptxReportImpl {
 		for (int i = 0; i < tasks.size(); i++) {
 			Task task = tasks.get(i);
 
-			int rectHeight = 25;
+			int rectHeight = 30;
 			int whiteSpace = 5;
 
 			int y = whiteSpace * (i + 1) + rectHeight * i;
@@ -87,10 +88,9 @@ public class CreateGanttPptxReportImpl {
 			XSLFTextParagraph paragraph = shape.addNewTextParagraph();
 			XSLFTextRun run = paragraph.addNewTextRun();
 			run.setText(task.getName());
-			run.setFontSize(12d);
+			run.setFontSize(14d);
+			paragraph.setTextAlign(TextAlign.CENTER);
 			shape.setVerticalAlignment(VerticalAlignment.MIDDLE);
-
-			// shape.setTextAutofit(TextAutofit.NORMAL);
 		}
 		pptProxy.savePresentation("test.pptx");
 	}

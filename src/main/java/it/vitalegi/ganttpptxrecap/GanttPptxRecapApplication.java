@@ -1,16 +1,30 @@
 package it.vitalegi.ganttpptxrecap;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+import it.vitalegi.ganttpptxrecap.bean.GanttConfig;
 import it.vitalegi.ganttpptxrecap.bean.Task;
 import it.vitalegi.ganttpptxrecap.service.CreateGanttPptxReportImpl;
+import it.vitalegi.ganttpptxrecap.util.JacksonUtil;
 
 @SpringBootApplication
 public class GanttPptxRecapApplication implements CommandLineRunner {
@@ -36,6 +50,10 @@ public class GanttPptxRecapApplication implements CommandLineRunner {
 						Task.build("task 2 task 2", date("2018-10-16"), date("2018-10-31"))//
 				)//
 		);
+
+		GanttConfig value = JacksonUtil.getValueYaml(GanttConfig.class, new FileInputStream("config.yaml"));
+
+		System.out.println(ReflectionToStringBuilder.toString(value, ToStringStyle.MULTI_LINE_STYLE));
 	}
 
 	private LocalDate date(String source) {
