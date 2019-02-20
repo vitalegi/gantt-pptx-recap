@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -47,6 +48,10 @@ public class CreateGanttPptxReportImpl {
 			Rectangle axis = axes.get(i);
 
 			pptProxy.drawLine(slide, axis, Color.RED);
+
+			String label = time.format(DateTimeFormatter.ofPattern("MM-yy"));
+
+			pptProxy.addText(slide, (int)axis.getX() - 30, (int)axis.getY() - 25, 60, 20, label, true);
 		}
 
 		pptProxy.savePresentation("test.pptx");

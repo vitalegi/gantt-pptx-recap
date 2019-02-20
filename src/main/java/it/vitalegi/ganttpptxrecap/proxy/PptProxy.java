@@ -17,6 +17,7 @@ import org.apache.poi.xslf.usermodel.XSLFConnectorShape;
 import org.apache.poi.xslf.usermodel.XSLFSlide;
 import org.apache.poi.xslf.usermodel.XSLFSlideLayout;
 import org.apache.poi.xslf.usermodel.XSLFSlideMaster;
+import org.apache.poi.xslf.usermodel.XSLFTextBox;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -38,6 +39,7 @@ public class PptProxy {
 	public Dimension getPageSize() {
 		return ppt.getPageSize();
 	}
+
 	public void savePresentation(OutputStream os) {
 
 		try {
@@ -57,7 +59,7 @@ public class PptProxy {
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException(e);
 		}
-		savePresentation( os);
+		savePresentation(os);
 	}
 
 	public List<XSLFSlideLayout> getLayouts() {
@@ -91,12 +93,23 @@ public class PptProxy {
 		line.setFillColor(color);
 	}
 
-
-
 	public XSLFSlide createSlide(SlideLayout slideLayout) {
 
 		XSLFSlideLayout layout = getLayout(slideLayout);
 
 		return ppt.createSlide(layout);
+	}
+
+	public void addText(XSLFSlide slide, int x, int y, int width, int height, String text, Boolean horizontalCentered) {
+
+		addText(slide, new Rectangle(x, y, width, height), text, horizontalCentered);
+	}
+
+	public void addText(XSLFSlide slide, Rectangle rectangle, String text, Boolean horizontalCentered) {
+
+		XSLFTextBox shape = slide.createTextBox();
+		shape.setText(text);
+		shape.setAnchor(rectangle);
+		shape.setHorizontalCentered(horizontalCentered);
 	}
 }
