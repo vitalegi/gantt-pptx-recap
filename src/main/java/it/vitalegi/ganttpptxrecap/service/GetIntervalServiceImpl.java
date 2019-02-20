@@ -21,7 +21,7 @@ public class GetIntervalServiceImpl {
 
 		LocalDate currDate = increment(from);
 
-		while (currDate.isBefore(to)) {
+		while (!currDate.isAfter(to)) {
 			dates.add(currDate);
 			currDate = increment(currDate);
 		}

@@ -25,10 +25,17 @@ public class GanttPptxRecapApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		createGanttPptxReport.execute(date("2018-10-05"), date("2019-02-15"), //
+		createGanttPptxReport.execute(date("2018-10-01"), date("2019-02-01"), //
 				Arrays.asList(//
-						Task.build("task 1", date("2018-10-10"), date("2018-11-10")),
-						Task.build("task 2", date("2018-11-10"), date("2018-12-10"))));
+						Task.build("task 1", date("2018-10-01"), date("2018-11-01")),
+						Task.build("task 2", date("2018-11-01"), date("2018-12-01")),
+						Task.build("task 2", date("2018-12-01"), date("2019-01-01")),
+						Task.build("task 2", date("2019-01-01"), date("2019-02-01")),
+						Task.build("task 2 task 2 task 2", date("2019-02-01"), date("2019-03-01")),
+						Task.build("task 2", date("2018-10-01"), date("2018-10-15")),
+						Task.build("task 2 task 2", date("2018-10-16"), date("2018-10-31"))//
+				)//
+		);
 	}
 
 	private LocalDate date(String source) {

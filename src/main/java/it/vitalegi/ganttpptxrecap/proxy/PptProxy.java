@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.apache.poi.xslf.usermodel.SlideLayout;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
+import org.apache.poi.xslf.usermodel.XSLFAutoShape;
 import org.apache.poi.xslf.usermodel.XSLFConnectorShape;
 import org.apache.poi.xslf.usermodel.XSLFSlide;
 import org.apache.poi.xslf.usermodel.XSLFSlideLayout;
@@ -104,8 +105,8 @@ public class PptProxy {
 		return new TextBlockBuilder(slide.createTextBox());
 	}
 
-	public AutoShapeBuilder addShape(XSLFSlide slide) {
+	public AutoShapeBuilder<XSLFAutoShape> addShape(XSLFSlide slide) {
 
-		return new AutoShapeBuilder(slide.createAutoShape());
+		return new AutoShapeBuilder<XSLFAutoShape>(slide.createAutoShape());
 	}
 }
