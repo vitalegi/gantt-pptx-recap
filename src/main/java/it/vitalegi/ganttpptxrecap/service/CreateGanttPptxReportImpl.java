@@ -4,10 +4,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
+import org.apache.poi.sl.usermodel.ShapeType;
 import org.apache.poi.xslf.usermodel.SlideLayout;
 import org.apache.poi.xslf.usermodel.XSLFSlide;
 import org.apache.poi.xslf.usermodel.XSLFTextShape;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import it.vitalegi.ganttpptxrecap.bean.Task;
+import it.vitalegi.ganttpptxrecap.proxy.AutoShapeBuilder;
 import it.vitalegi.ganttpptxrecap.proxy.PptProxy;
 
 /**
@@ -23,7 +25,10 @@ import it.vitalegi.ganttpptxrecap.proxy.PptProxy;
 @Component
 public class CreateGanttPptxReportImpl {
 
-	public void execute(Date from, Date to, List<Task> tasks) {
+	public void execute(LocalDate from, LocalDate to, List<Task> tasks) {
+
+		from = YearMonth.from(from).atDay(1);
+		to = YearMonth.from(to).plusMonths(1).atDay(1);
 
 		PptProxy pptProxy = providerService.getBeanByType(PptProxy.class);
 
@@ -41,6 +46,10 @@ public class CreateGanttPptxReportImpl {
 
 		Rectangle drawingArea = getDrawingArea(pptProxy.getPageSize());
 
+		pptProxy.addShape(slide)//
+				.setLineColor(Color.RED)//
+				.setAnchor(drawingArea);
+
 		List<Rectangle> axes = getIntervalAxisService.getAxes(drawingArea, intervals);
 
 		for (int i = 0; i < intervals.size(); i++) {
@@ -49,11 +58,28 @@ public class CreateGanttPptxReportImpl {
 
 			pptProxy.drawLine(slide, axis, Color.RED);
 
-			String label = time.format(DateTimeFormatter.ofPattern("MM-yy"));
-
-			pptProxy.addText(slide, (int)axis.getX() - 30, (int)axis.getY() - 25, 60, 20, label, true);
+			pptProxy.addText(slide)//
+					.setAnchor((int) axis.getX() - 30, (int) axis.getY() - 25, 60, 20)//
+					.setText(time.format(DateTimeFormatter.ofPattern("MM-yy")))//
+					.setHorizontalCentered(true);
 		}
 
+		for (int i = 0; i < tasks.size(); i++) {
+			Task task = tasks.get(i);
+
+			int rectHeight = 15;
+			int whiteSpace = 5;
+
+			int y = whiteSpace * (i + 1) + rectHeight * i;
+
+			int x = (int) getCoordinateService.getAbsoluteX(drawingArea, from, to, task.getFrom());
+			int width = (int) getCoordinateService.getAbsoluteX(drawingArea, from, to, task.getTo()) - x;
+
+			AutoShapeBuilder shape = pptProxy.addShape(slide);
+			shape.setAnchor(x, (int) drawingArea.getY() + y, width, rectHeight)//
+					.setFillColor(Color.RED)//
+					.setShapeType(ShapeType.CHEVRON);
+		}
 		pptProxy.savePresentation("test.pptx");
 	}
 
@@ -63,8 +89,8 @@ public class CreateGanttPptxReportImpl {
 		int height = (int) pageSize.getHeight();
 		double margin = 0.2;
 
-		return new Rectangle((int) (margin * width), (int) (margin * height), (int) ((1 - 2*margin) * width),
-				(int) ((1 - 2*margin) * height));
+		return new Rectangle((int) (margin * width), (int) (margin * height), (int) ((1 - 2 * margin) * width),
+				(int) ((1 - 2 * margin) * height));
 	}
 
 	@Autowired
@@ -75,4 +101,7 @@ public class CreateGanttPptxReportImpl {
 
 	@Autowired
 	private GetIntervalAxisServiceImpl getIntervalAxisService;
+
+	@Autowired
+	private GetCoordinateServiceImpl getCoordinateService;
 }

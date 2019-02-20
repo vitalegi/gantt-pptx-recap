@@ -17,7 +17,6 @@ import org.apache.poi.xslf.usermodel.XSLFConnectorShape;
 import org.apache.poi.xslf.usermodel.XSLFSlide;
 import org.apache.poi.xslf.usermodel.XSLFSlideLayout;
 import org.apache.poi.xslf.usermodel.XSLFSlideMaster;
-import org.apache.poi.xslf.usermodel.XSLFTextBox;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -100,16 +99,13 @@ public class PptProxy {
 		return ppt.createSlide(layout);
 	}
 
-	public void addText(XSLFSlide slide, int x, int y, int width, int height, String text, Boolean horizontalCentered) {
+	public TextBlockBuilder addText(XSLFSlide slide) {
 
-		addText(slide, new Rectangle(x, y, width, height), text, horizontalCentered);
+		return new TextBlockBuilder(slide.createTextBox());
 	}
 
-	public void addText(XSLFSlide slide, Rectangle rectangle, String text, Boolean horizontalCentered) {
+	public AutoShapeBuilder addShape(XSLFSlide slide) {
 
-		XSLFTextBox shape = slide.createTextBox();
-		shape.setText(text);
-		shape.setAnchor(rectangle);
-		shape.setHorizontalCentered(horizontalCentered);
+		return new AutoShapeBuilder(slide.createAutoShape());
 	}
 }

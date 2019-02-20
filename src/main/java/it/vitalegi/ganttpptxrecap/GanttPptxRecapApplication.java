@@ -1,15 +1,15 @@
 package it.vitalegi.ganttpptxrecap;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import it.vitalegi.ganttpptxrecap.bean.Task;
 import it.vitalegi.ganttpptxrecap.service.CreateGanttPptxReportImpl;
 
 @SpringBootApplication
@@ -25,15 +25,14 @@ public class GanttPptxRecapApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		createGanttPptxReport.execute(date("2018-10-05"), date("2019-02-15"), new ArrayList<>());
+		createGanttPptxReport.execute(date("2018-10-05"), date("2019-02-15"), //
+				Arrays.asList(//
+						Task.build("task 1", date("2018-10-10"), date("2018-11-10")),
+						Task.build("task 2", date("2018-11-10"), date("2018-12-10"))));
 	}
 
-	private Date date(String source) {
-		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			return sdf.parse(source);
-		} catch (ParseException e) {
-			throw new RuntimeException(e);
-		}
+	private LocalDate date(String source) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		return LocalDate.parse(source, formatter);
 	}
 }

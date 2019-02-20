@@ -1,8 +1,6 @@
 package it.vitalegi.ganttpptxrecap.bean;
 
-import java.util.Date;
-
-import javax.annotation.Generated;
+import java.time.LocalDate;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +11,16 @@ import lombok.ToString;
 @ToString
 public class Task {
 
+	public static Task build(String name, LocalDate from, LocalDate to) {
+
+		Task task = new Task();
+		task.setName(name);
+		task.setFrom(from);
+		task.setTo(to);
+		return task;
+	}
+
 	protected String name;
-	protected Date from;
-	protected Date to;
+	protected LocalDate from;
+	protected LocalDate to;
 }
