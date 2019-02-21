@@ -19,7 +19,7 @@ public class GanttConfig {
 	LocalDate from;
 	LocalDate to;
 	List<Task> tasks;
-	Style defaultTaskStyle;
+	ShapeStyle defaultTaskStyle;
 	Area drawingArea;
 	Label labelStyle;
 }

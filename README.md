@@ -26,14 +26,14 @@ java -jar target\gantt-pptx-recap-0.0.1-SNAPSHOT.jar
 
 I dati rappresentati saranno:
 
-- [x] Data di partenza
-- [x] Data di fine
-- [x] Elenco di task, rappresentati da:
+- [X] Data di partenza
+- [X] Data di fine
+- [X] Elenco di task, rappresentati da:
 	- Nome
 	- Data inizio
 	- Data fine
-- [ ] creare presentazione in base a file di input
-- [ ] rendere configurabile l'applicazione
+- [X] creare presentazione in base a file di input
+- [X] rendere configurabile l'applicazione
 
 ## Sviluppi futuri
 

@@ -18,17 +18,22 @@ labelStyle:
     height: 20
   lineColor:
     type: name
-    code: BLACK
+    code: BLACK  
+defaultTaskStyle:
+  fontSize: 12
+  textAlign: CENTER
+  shapeType: CHEVRON
+  fillColor:
+    type: name
+    code: RED
 tasks:
 - name: a
   from: 2018-10-01
   to: 2018-10-15
-  style:
-    fontSize: 12
-    textAlign: CENTER
 - name: b
   from: 2018-10-15
   to: 2018-11-01
   style:
-    fontSize: 12
-    textAlign: CENTER
+    fillColor:
+      type: name
+      code: GREEN

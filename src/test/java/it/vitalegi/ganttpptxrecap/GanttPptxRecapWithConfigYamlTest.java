@@ -25,7 +25,7 @@ import it.vitalegi.ganttpptxrecap.util.JacksonUtil;
 public class GanttPptxRecapWithConfigYamlTest {
 
 	@Test
-	public void runWithConfigYaml2() throws Exception {
+	public void runWithConfigYaml() throws Exception {
 
 		GanttConfig config = JacksonUtil.getValueYaml(GanttConfig.class, new FileInputStream("config.yaml"));
 
