@@ -21,6 +21,8 @@ import org.apache.poi.xslf.usermodel.XSLFSlideMaster;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import it.vitalegi.ganttpptxrecap.bean.Style;
+
 /**
  * @author Giorgio Vitale
  */
@@ -80,17 +82,23 @@ public class PptProxy {
 				.findFirst().orElse(null);
 	}
 
-	public void drawLine(XSLFSlide slide, int x, int y, int width, int height, Color color) {
+	public void drawLine(XSLFSlide slide, int x, int y, int width, int height, Style style) {
 
-		drawLine(slide, new Rectangle(x, y, width, height), color);
+		drawLine(slide, new Rectangle(x, y, width, height), style);
 	}
 
-	public void drawLine(XSLFSlide slide, Rectangle rectangle, Color color) {
+	public void drawLine(XSLFSlide slide, Rectangle rectangle, Style style) {
 
 		XSLFConnectorShape line = slide.createConnector();
 
 		line.setAnchor(rectangle);
-		line.setFillColor(color);
+
+		if (style.getFillColor() != null) {
+			line.setFillColor(style.getFillColor().getColor());
+		}
+		if (style.getLineColor() != null) {
+			line.setLineColor(style.getLineColor().getColor());
+		}
 	}
 
 	public XSLFSlide createSlide(SlideLayout slideLayout) {

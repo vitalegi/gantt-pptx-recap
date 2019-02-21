@@ -24,9 +24,7 @@ public class GetCoordinateServiceImpl {
 
 	public double getX(double width, LocalDate from, LocalDate to, LocalDate target) {
 
-		double w = width * getXRatio(from, to, target);
-		System.out.println("> "  + target + " " + (int)w);
-		return w;
+		return width * getXRatio(from, to, target);
 	}
 
 	public double getXRatio(LocalDate from, LocalDate to, LocalDate target) {

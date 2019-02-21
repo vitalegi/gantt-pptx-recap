@@ -23,4 +23,5 @@ public class Task {
 	protected String name;
 	protected LocalDate from;
 	protected LocalDate to;
+	protected Style style;
 }

@@ -18,7 +18,6 @@ public class GetIntervalAxisServiceImpl {
 
 		LocalDate from = intervals.get(0);
 		LocalDate to = intervals.get(intervals.size() - 1);
-		System.out.println(">>> " + from + " " + to);
 		List<Rectangle> axes = new ArrayList<>();
 
 		int slices = intervals.size() - 1;

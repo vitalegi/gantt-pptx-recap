@@ -8,9 +8,9 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.poi.sl.usermodel.ShapeType;
-import org.apache.poi.sl.usermodel.TextParagraph.TextAlign;
-import org.apache.poi.sl.usermodel.TextShape.TextAutofit;
 import org.apache.poi.sl.usermodel.VerticalAlignment;
 import org.apache.poi.xslf.usermodel.SlideLayout;
 import org.apache.poi.xslf.usermodel.XSLFAutoShape;
@@ -21,9 +21,12 @@ import org.apache.poi.xslf.usermodel.XSLFTextShape;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import it.vitalegi.ganttpptxrecap.bean.GanttConfig;
+import it.vitalegi.ganttpptxrecap.bean.Label;
 import it.vitalegi.ganttpptxrecap.bean.Task;
 import it.vitalegi.ganttpptxrecap.proxy.AutoShapeBuilder;
 import it.vitalegi.ganttpptxrecap.proxy.PptProxy;
+import it.vitalegi.ganttpptxrecap.proxy.RectangleBuilder;
 
 /**
  * @author Giorgio Vitale
@@ -31,17 +34,14 @@ import it.vitalegi.ganttpptxrecap.proxy.PptProxy;
 @Component
 public class CreateGanttPptxReportImpl {
 
-	public void execute(LocalDate from, LocalDate to, List<Task> tasks) {
+	public void execute(GanttConfig config) {
 
-		from = YearMonth.from(from).atDay(1);
-		to = YearMonth.from(to).plusMonths(1).atDay(1);
+		LocalDate from = YearMonth.from(config.getFrom()).atDay(1);
+		LocalDate to = YearMonth.from(config.getTo()).plusMonths(1).atDay(1);
 
 		PptProxy pptProxy = providerService.getBeanByType(PptProxy.class);
 
 		pptProxy.createPresentation();
-
-		// pptProxy.getLayouts().forEach(layout -> System.out.println("Layout: " +
-		// layout.getName()));
 
 		XSLFSlide slide = pptProxy.createSlide(SlideLayout.TITLE_ONLY);
 
@@ -50,6 +50,8 @@ public class CreateGanttPptxReportImpl {
 		title.setText("Hello");
 
 		Rectangle drawingArea = getDrawingArea(pptProxy.getPageSize());
+		drawingArea = config.getDrawingArea().getRectangle();
+
 		List<LocalDate> intervals = getIntervalService.getIntervals(from, to);
 		List<Rectangle> axes = getIntervalAxisService.getAxes(drawingArea, intervals);
 
@@ -61,13 +63,24 @@ public class CreateGanttPptxReportImpl {
 			LocalDate time = intervals.get(i);
 			Rectangle axis = axes.get(i);
 
-			pptProxy.drawLine(slide, axis, Color.RED);
+			pptProxy.drawLine(slide, axis, config.getLabelStyle());
+
+			Label labelStyle = config.getLabelStyle();
+
+			Rectangle area = labelStyle.getRelativePosition().getRectangle();
 
 			pptProxy.addText(slide)//
-					.setAnchor((int) axis.getX() - 30, (int) axis.getY() - 25, 60, 20)//
-					.setText(time.format(DateTimeFormatter.ofPattern("MM-yy")))//
+					.setAnchor(RectangleBuilder.newInstance()//
+							.setX(axis.getX() + area.getX())//
+							.setY(axis.getY() + area.getY())//
+							.setWidth(area.getWidth())//
+							.setHeight(area.getHeight())//
+							.build())//
+					.setText(time.format(DateTimeFormatter.ofPattern(labelStyle.getFormat())))//
 					.setHorizontalCentered(true);
 		}
+
+		List<Task> tasks = config.getTasks();
 
 		for (int i = 0; i < tasks.size(); i++) {
 			Task task = tasks.get(i);
@@ -86,10 +99,12 @@ public class CreateGanttPptxReportImpl {
 					.setShapeType(ShapeType.CHEVRON)//
 			;
 			XSLFTextParagraph paragraph = shape.addNewTextParagraph();
+
 			XSLFTextRun run = paragraph.addNewTextRun();
+
+			run.setFontSize(task.getStyle().getFontSize());
 			run.setText(task.getName());
-			run.setFontSize(14d);
-			paragraph.setTextAlign(TextAlign.CENTER);
+			paragraph.setTextAlign(task.getStyle().getTextAlign());
 			shape.setVerticalAlignment(VerticalAlignment.MIDDLE);
 		}
 		pptProxy.savePresentation("test.pptx");
@@ -118,4 +133,6 @@ public class CreateGanttPptxReportImpl {
 
 	@Autowired
 	private GetCoordinateServiceImpl getCoordinateService;
+
+	private Log log = LogFactory.getLog(CreateGanttPptxReportImpl.class);
 }

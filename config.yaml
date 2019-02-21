@@ -2,10 +2,33 @@
 ---
 from: 2018-10-01
 to: 2019-02-01
+drawingArea:
+  type: area
+  x: 144
+  y: 108
+  width: 432 
+  height: 324
+labelStyle:
+  format: MM-yy
+  relativePosition:
+    type: area
+    x: -30
+    y: -30
+    width: 60
+    height: 20
+  lineColor:
+    type: name
+    code: BLACK
 tasks:
-  - name: a
-    from: 2018-10-01
-    to: 2018-10-15
-  - name: b
-    from: 2018-10-15
-    to: 2018-11-01
+- name: a
+  from: 2018-10-01
+  to: 2018-10-15
+  style:
+    fontSize: 12
+    textAlign: CENTER
+- name: b
+  from: 2018-10-15
+  to: 2018-11-01
+  style:
+    fontSize: 12
+    textAlign: CENTER
