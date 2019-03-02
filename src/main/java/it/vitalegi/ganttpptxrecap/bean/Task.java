@@ -11,15 +11,7 @@ import lombok.ToString;
 @ToString
 public class Task {
 
-	public static Task build(String name, LocalDate from, LocalDate to) {
-
-		Task task = new Task();
-		task.setName(name);
-		task.setFrom(from);
-		task.setTo(to);
-		return task;
-	}
-
+	protected Integer level;
 	protected String name;
 	protected LocalDate from;
 	protected LocalDate to;

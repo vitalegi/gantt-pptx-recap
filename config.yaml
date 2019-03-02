@@ -2,6 +2,8 @@
 ---
 from: 2018-10-01
 to: 2019-02-01
+taskHeight: 30
+taskTopMargin: 5
 drawingArea:
   type: area
   x: 144
@@ -27,13 +29,28 @@ defaultTaskStyle:
     type: name
     code: RED
 tasks:
-- name: a
+- level: 0
+  name: a
   from: 2018-10-01
   to: 2018-10-15
-- name: b
+- level: 0
+  name: c
+  from: 2018-10-15
+  to: 2018-11-15
+- level: 1
+  name: b
   from: 2018-10-15
   to: 2018-11-01
   style:
     fillColor:
       type: name
       code: GREEN
+- name: aaa
+  from: 2018-11-01
+  to: 2019-01-15
+- name: bbb
+  from: 2019-01-15
+  to: 2019-02-01
+- name: ccc
+  from: 2018-11-01
+  to: 2019-01-01

@@ -34,9 +34,5 @@ I dati rappresentati saranno:
 	- Data fine
 - [X] creare presentazione in base a file di input
 - [X] rendere configurabile l'applicazione
-
-## Sviluppi futuri
-
-- Dipendenza tra task
-- Owner task
-- Note per task
+- [X] possibilità di inserire più task su una stessa riga
+- [ ] possibilità di inserire delle note per un task, che compariranno accanto

@@ -22,4 +22,6 @@ public class GanttConfig {
 	ShapeStyle defaultTaskStyle;
 	Area drawingArea;
 	Label labelStyle;
+	int taskHeight;
+	int taskTopMargin;
 }
